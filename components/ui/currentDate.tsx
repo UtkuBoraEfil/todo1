@@ -6,7 +6,7 @@ export function CurrentDate () {
     const day = date.getDate();
     const month = monthNames[date.getMonth()];
   return (
-    <div className=" text-[100px] font-bold text-center leading-none ">
+    <div className=" xl:text-[100px] lg:text-[82px] text-[48px] font-bold text-center z-10 leading-none ">
       {day + " " + month}
     </div>
   );

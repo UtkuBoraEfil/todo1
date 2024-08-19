@@ -11,8 +11,8 @@ export function LogoutButton() {
         await signOut();
       }}
     >
-      <button type="submit" className="text-red-800 w-full h-full c">
-        <LogOut size={24} />
+      <button type="submit" className="text-red-800 w-full h-full">
+          <LogOut className="w-4 lg:w-8"/>
       </button>
     </form>
   );

@@ -40,7 +40,7 @@ export default async function Page() {
           <DailyGoal goal={goal?.goal} goal_id={goal?.id} key={goal?.id}/>
         ))}
       </div>
-      <div className=" absolute top-0 -left-10 ">
+      <div className=" absolute top-0 -left-10 hidden lg:block">
         <HangingJesus/>
       </div>
       <div className=" absolute bottom-0 right-0 ">

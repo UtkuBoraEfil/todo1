@@ -19,9 +19,9 @@ export async function History() {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="bg-navy-blue rounded-md flex justify-center p-2 w-60 gap-3">
-        <CalendarFold className=" text-main-white" />
-        <h1 className="text-white font-bold text-lg">History</h1>
+      <div className="bg-navy-blue rounded-md flex justify-center p-2 w-full gap-3">
+        <CalendarFold className=" text-main-white w-5 lg:w-8" />
+        <h1 className="text-white font-bold lg:text-lg text-sm ">History</h1>
       </div>
       <div className="flex flex-col gap-2 pt-3">
         {dates.map((date?) => (

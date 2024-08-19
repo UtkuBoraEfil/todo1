@@ -5,7 +5,7 @@ import { deleteGoal } from '@/actions';
 
 export function Button ({id}: {id: string}) {
   return (
-    <button onClick={()=>deleteGoal(id)} className=" rounded-lg w-12 h-12 flex justify-center items-center">
+    <button onClick={()=>deleteGoal(id)} className=" rounded-lg xl:w-12 xl:h-12 lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center">
     <Trash2 className='text-red-600' />
   </button>
   );

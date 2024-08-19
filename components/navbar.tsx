@@ -13,7 +13,9 @@ export default function Navbar () {
       <div className="flex flex-col gap-5 pr-3">
         <div className="flex justify-between mb-10">
           <Logo/>
-          <LogoutButton/>
+          <div className="hidden lg:block ">
+            <LogoutButton/>
+          </div>
         </div>
         <Favorites/>
         <History/>

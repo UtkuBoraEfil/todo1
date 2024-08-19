@@ -1,8 +1,8 @@
 export function HangingJesus() {
   return (
     <svg
-      width="398"
-      height="380"
+    className="xl:w-96 lg:w-80 w-64 -z-10"
+
       viewBox="0 0 398 380"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
