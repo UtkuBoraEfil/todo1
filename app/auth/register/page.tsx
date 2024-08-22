@@ -46,6 +46,7 @@ export default function Register() {
 
   return (
     <div className="grid min-h-screen  place-content-center ">
+      <h1>Register</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField

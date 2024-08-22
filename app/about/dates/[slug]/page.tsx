@@ -1,21 +1,27 @@
-import { signOut, auth } from "@/auth";
-import { Button } from "@/components/ui/button";
-import { CurrentDate } from "@/components/ui/currentDate";
+import { auth } from "@/auth";
+import { HistoryDate } from "@/components/ui/historyDate";
 import { DailyGoal } from "@/components/ui/dailyGoal";
-import { InputArea } from "@/components/ui/inputArea";
-import Link from "next/link";
-// import { redirect } from "next/dist/server/api-utils";
-import { redirect } from "next/navigation";
-import {HangingJesus} from "@/components/icons/hangingJesus";
-import { DeadJesus } from "@/components/icons/deadJesus";
-import { prisma } from "@/lib/prisma";
 import { findDay } from "@/actions";
+import { redirect } from "next/navigation";
+import { HangingJesus } from "@/components/icons/hangingJesus";
+import { DeadJesus } from "@/components/icons/deadJesus";
+import {prisma} from "@/lib/prisma";
 
-export default async function Page() {
 
+
+export default async function Date ({ params }: { params: any }) {
+  const dayId = params.slug;
+  const currentDayId = await findDay();
+  if(dayId === currentDayId){
+    redirect("/about")
+  }
+  const day = await prisma.day.findFirst({
+    where: {
+      id: dayId
+    }
+  })
   const session = await auth();
   const user = session?.user;
-  const dayId = await findDay();
   let goals: any[] = [];
   if(user && dayId){
     goals = await prisma.goal.findMany({
@@ -29,12 +35,10 @@ export default async function Page() {
     })
   }
 
+  const given_date = day?.target_date?.toString() || "";
   return (
     <main className="min-h-screen w-full pt-5 relative">
-      <CurrentDate />
-      <div className="w-full flex justify-center mt-10">
-        <InputArea />
-      </div>
+      <HistoryDate given_date={given_date} />
       <div className=" w-full flex flex-col place-items-center gap-8 mt-20 h-[50svh] overflow-auto">
         {goals.map((goal?)=>(
           <DailyGoal goal={goal?.goal} goal_id={goal?.id} isCompleted={goal?.isCompleted} key={goal?.id}/>
@@ -48,19 +52,4 @@ export default async function Page() {
       </div>
     </main>
   );
-}
-
-// <form
-//   action={async (formData) => {
-//     "use server";
-//     await signOut({
-//       redirectTo: "/auth/login",
-//     });
-//   }}
-//   className="min-h-screen grid place-items-center"
-// >
-//   <div>
-//     <pre>{JSON.stringify(session, null, 2)}</pre>
-//   </div>
-//   <Button type="submit">Sign out</Button>
-// </form>
+};

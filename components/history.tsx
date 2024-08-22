@@ -13,7 +13,7 @@ export async function History() {
       userId: user?.id,
     },
     orderBy: {
-      target_date: "desc",
+      createdAt: "desc",
     },
   });
 
@@ -25,7 +25,7 @@ export async function History() {
       </div>
       <div className="flex flex-col gap-2 pt-3">
         {dates.map((date?) => (
-          <Date date={date?.target_date} slug={date?.slug} key={date?.id} />
+          <Date date={date?.target_date} slug={date?.id} key={date?.id} />
         ))}
       </div>
     </div>

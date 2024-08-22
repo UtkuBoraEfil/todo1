@@ -1,9 +1,13 @@
 "use server";
-import { signIn, auth } from "@/auth";
+import { signIn, auth, signOut } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { Session } from "next-auth";
 import { revalidatePath } from "next/cache";
+
+export async function handleSignOut() {
+  await signOut();
+}
 
 export async function register({
   email,
@@ -108,7 +112,10 @@ export async function createDate(given_date: string) {
         data: {
           target_date: given_date,
           userId,
-          slug: given_date.replace(/\s+/g, "-").toLowerCase() + "-" + userId.replace(/\s+/g, "-").toLowerCase(),
+          slug:
+            given_date.replace(/\//g, "-").toLowerCase() +
+            "-" +
+            userId.replace(/\s+/g, "-").toLowerCase(),
         },
       });
       return newDay.id;
@@ -140,9 +147,13 @@ export async function findDay() {
       data: {
         target_date: tarih,
         userId,
-        slug: tarih.replace(/\s+/g, "-").toLowerCase() + "-" + userId,
+        slug:
+          tarih.replace(/\//g, "-").toLowerCase() +
+          "-" +
+          userId.replace(/\s+/g, "-").toLowerCase(),
       },
     });
+
     return newDay.id;
   }
 }
@@ -153,5 +164,54 @@ export async function deleteGoal(goalId: string) {
       id: goalId,
     },
   });
+  revalidatePath("/about");
+}
+
+export async function completeGoal(goalId: string, isCompleted: boolean) {
+  await prisma.goal.update({
+    where: {
+      id: goalId,
+    },
+    data: {
+      isCompleted: isCompleted,
+    },
+  });
+  revalidatePath("/about");
+}
+
+export async function bringGoalToToday(goalId: string) {
+  console.log("bringGoalToToday", goalId);
+  const dayId = await findDay();
+  const goal = await prisma.goal.findUnique({
+    where: {
+      id: goalId,
+    },
+  });
+  const fromDayId = goal?.dayId;
+  await prisma.goal.update({
+    where: {
+      id: goalId,
+    },
+    data: {
+      dayId: dayId,
+    },
+  });
+  deleteDay(fromDayId as string);
+}
+
+export async function deleteDay(dayId: string) {
+  let goals = [];
+  goals = await prisma.goal.findMany({
+    where: {
+      dayId: dayId,
+    },
+  });
+  if (goals.length === 0) {
+    await prisma.day.delete({
+      where: {
+        id: dayId,
+      },
+    });
+  }
   revalidatePath("/about");
 }
