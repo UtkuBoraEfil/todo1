@@ -32,13 +32,15 @@ export default async function Page() {
   return (
     <main className="min-h-screen w-full pt-5 relative">
       <CurrentDate />
-      <div className="w-full flex justify-center mt-10">
-        <InputArea />
-      </div>
-      <div className=" w-full flex flex-col place-items-center gap-8 mt-20 h-[50svh] overflow-auto">
-        {goals.map((goal?)=>(
-          <DailyGoal goal={goal?.goal} goal_id={goal?.id} isCompleted={goal?.isCompleted} key={goal?.id}/>
-        ))}
+      <div className="w-full xl:px-10 xl:max-w-[800px] lg:px-10 px-4 mx-auto">
+        <div className="w-full flex justify-center mt-10">
+          <InputArea />
+        </div>
+        <div className=" w-full flex flex-col place-items-center gap-8 mt-20 h-[50svh] overflow-auto">
+          {goals.map((goal?)=>(
+            <DailyGoal goal={goal?.goal} goal_id={goal?.id} isCompleted={goal?.isCompleted} key={goal?.id}/>
+          ))}
+        </div>
       </div>
       <div className=" absolute top-0 -left-10 hidden lg:block">
         <HangingJesus/>

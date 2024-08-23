@@ -38,6 +38,7 @@ model Goal {
   id            String          @id @default(cuid())
   goal          String       
   isCompleted   Boolean         @default(false)
+  isFavorite    Boolean         @default(false)
   targetAmount  Float?
   currentAmount Float?
   userId        String

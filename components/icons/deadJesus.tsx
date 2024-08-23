@@ -1,7 +1,7 @@
 export function DeadJesus() {
   return (
     <svg
-     className=" xl:w-[485px] lg:w-[365px] w-[280px]"
+     className=" xl:w-[485px] lg:w-[365px] w-[280px] z-0"
       viewBox="0 0 485 661"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
