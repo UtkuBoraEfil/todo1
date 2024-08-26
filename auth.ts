@@ -12,7 +12,7 @@ export const {
   auth,
 } = NextAuth({
   adapter: PrismaAdapter(prisma),
-  
+
   providers: [
     Credentials({
       credentials: {
@@ -39,11 +39,11 @@ export const {
   callbacks: {
     authorized: async ({ auth }) => {
       // Logged in users are authenticated, otherwise redirect to login page
-      return !!auth
+      return !!auth;
     },
     async session({ session, token }) {
-      console.log('token from callback', token);
-      console.log('session from callback', session);
+      // console.log("token from callback", token);
+      // console.log("session from callback", session);
       if (token.sub) {
         session.user.id = token.sub;
       }

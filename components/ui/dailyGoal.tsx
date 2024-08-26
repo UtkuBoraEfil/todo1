@@ -1,6 +1,7 @@
 "use client";
 import { SendIcon } from "@/components/icons/send";
 import { Button } from "@/components/ui/deleteButton";
+import { UpdateGoalButton } from "@/components/ui/updateGoalButton";
 import { useState, useEffect, useRef, FormEvent } from "react";
 import { cn } from "@/lib/utils";
 import { Check, RefreshCcw } from "lucide-react";
@@ -12,38 +13,43 @@ interface DailyGoalProps {
   isCompleted: boolean;
 }
 
-export  function DailyGoal({ goal, goal_id, isCompleted }: DailyGoalProps) {
+export function DailyGoal({ goal, goal_id, isCompleted }: DailyGoalProps) {
   const [value, setValue] = useState(goal);
   const [completed, setCompleted] = useState(isCompleted);
 
-  function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) { 
-    setValue(event.target.value);
+  function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     event.preventDefault();
+    setValue(event.target.value);
   }
 
+  const handleSubmit = updateGoal.bind(null, goal_id);
 
-
-  const handleSubmit =  updateGoal.bind(null,goal_id);
-
-  const handleFormSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append("value", value);
-    await updateGoal(goal_id, formData);
-    console.log("Form submitted");
-  };
+  // const handleFormSubmit = async (event: FormEvent) => {
+  //   event.preventDefault();
+  //   const formData = new FormData();
+  //   formData.append("value", value);
+  //   await updateGoal(goal_id, formData);
+  //   console.log("Form submitted");
+  // };
 
   const handleCheck = async () => {
     await completeGoal(goal_id, !completed);
     setCompleted(!completed);
   };
 
+  const handleUpdateClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log("clicked");
+    textareaRef.current?.focus();
+    // handleInputFocus();
+    await updateGoal(goal_id, value);
+    // handleInputBlur();
+  };
   const [isInputFocused, setIsInputFocused] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const adjustTextareaHeight = () => {
     if (textareaRef.current) {
-      if(textareaRef.current.scrollHeight > 40)
+      if (textareaRef.current.scrollHeight > 40)
         textareaRef.current.style.height = "auto";
       if (isInputFocused) {
         textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
@@ -56,7 +62,6 @@ export  function DailyGoal({ goal, goal_id, isCompleted }: DailyGoalProps) {
   useEffect(() => {
     adjustTextareaHeight();
   }, [goal, isInputFocused]);
- 
 
   const handleInputFocus = () => {
     setIsInputFocused(true);
@@ -67,12 +72,9 @@ export  function DailyGoal({ goal, goal_id, isCompleted }: DailyGoalProps) {
     setIsInputFocused(false);
     adjustTextareaHeight();
   };
-
-  const handleButtonClick = () => {
-    console.log("Button clicked");
-    console.log("nolur calis artik");
+  const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
   };
-
 
   return (
     <div className="flex justify-around lg:gap-3 gap-1 z-10 w-full  lg:px-10">
@@ -88,40 +90,63 @@ export  function DailyGoal({ goal, goal_id, isCompleted }: DailyGoalProps) {
         </div>
       </button>
       <form
-        onSubmit={handleFormSubmit}
+        // onSubmit={handleFormSubmit}
         className={cn(
           "w-full  bg-input-bg rounded-lg flex justify-between",
           completed && "bg-light-gray"
         )}
       >
-        <div className="w-full h-auto grid place-items-center" >
+        <div className="w-full h-auto grid place-items-center">
           <textarea
             ref={textareaRef}
             name="goalInput"
+            spellCheck="false"
             disabled={completed}
             value={value}
             onChange={handleChange}
             className={cn(
               "w-full h-full overflow-hidden bg-transparent flex-1 pl-5 focus:outline-none active:outline-none transition-all duration-300 ease-in-out",
               completed && "line-through decoration-1",
-              isInputFocused ? "h-full lg:py-2" : "h-full truncate"
+              isInputFocused
+                ? "h-full lg:py-2 "
+                : "h-full truncate"
             )}
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
             onInput={adjustTextareaHeight}
-            style={{ resize: "none", transition: "height 0.3s ease", height: isInputFocused ? `${textareaRef.current?.scrollHeight}px` : "1.5rem" }}
+            style={{
+              resize: "none",
+              transition: "height 0.3s ease",
+              height: isInputFocused
+                ? `${textareaRef.current?.scrollHeight}px`
+                : "1.5rem",
+            }}
           />
         </div>
-        <button  type="submit" >submit</button>
-        {/* {isInputFocused && (
+        {/* <div className="h-full grid place-items-center">
+          <UpdateGoalButton id={goal_id} value={value} />
+        </div> */}
+        {isInputFocused && (
+          // <div className="h-full grid place-items-center w-6 z-[2]">
+          //   <UpdateGoalButton id={goal_id} value={value} />
+          // </div>
+          <button
+            onMouseDown={handleMouseDown}
+            onClick={handleUpdateClick}
+            className="flex items-center justify-center pr-2"
+          >
+            <RefreshCcw />
+          </button>
+        )}
+        {!isInputFocused && (
+          <div className="h-full grid place-items-center">
+            <Button id={goal_id} />
+          </div>
+        )}
 
-            <button type="button" onClick={handleButtonClick} className="xl:w-12 lg:w-10 w-6">
-              <RefreshCcw />
-            </button>
-        )} 
-        {!isInputFocused && <div  className="h-full grid place-items-center"><Button id={goal_id} /></div>}
-        */}
-         <div  className="h-full grid place-items-center"><Button id={goal_id} /></div>
+        {/* <div className="h-full grid place-items-center">
+          <Button id={goal_id} />
+        </div> */}
       </form>
       <button
         onClick={() => bringGoalToToday(goal_id)}

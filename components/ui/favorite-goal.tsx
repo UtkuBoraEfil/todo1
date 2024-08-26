@@ -19,7 +19,7 @@ export async function FavoriteGoal () {
   })
 
   return (
-    <div className="xl:max-w-[232px] lg:max-w-[171px] max-w-[123px]">
+    <div className="xl:max-w-[215px] lg:max-w-[155px] max-w-[110px]">
         {favs.map((fav?)=> (
           <FavGoal key={fav.id} fav={fav} />
         ))}

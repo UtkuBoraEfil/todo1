@@ -23,7 +23,7 @@ export default function Navbar({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "bg-light-gray rounded-r-lg shadow-lg pt-5 flex flex-col justify-between pl-2 lg:pl-3 z-10 ",
+        "bg-light-gray rounded-r-lg shadow-lg pt-5 flex flex-col justify-between pl-2 lg:pl-3 z-10",
         open === "false" ? "w-0 absolute -left-3" : "w-auto"
       )}
     >
@@ -32,12 +32,14 @@ export default function Navbar({ children }: { children: React.ReactNode }) {
           open === "true" ? "flex flex-col justify-between h-full" : "hidden"
         )}
       >
-        <div className="flex flex-col gap-5 pr-2 lg:pr-3">
+        <div className="flex flex-col gap-5 pr-2 lg:pr-3 h-full overflow-hidden">
           <div className="flex justify-between mb-10 gap-1">
             <Logo />
             <CloseNavbar open={open} setOpen={setOpen} />
           </div>
-          {children}
+          <div className="flex flex-col gap-5 h-[60svh] ">
+            {children}
+          </div>
         </div>
         <div className="relative">
           <Jesus />

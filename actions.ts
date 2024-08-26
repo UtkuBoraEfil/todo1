@@ -217,20 +217,16 @@ export async function deleteDay(dayId: string) {
   revalidatePath("/about");
 }
 
-export async function updateGoal(goalId: string, data: FormData) {
+export async function updateGoal(goalId: string, value: string) {
   console.log("HELLO FROM UPDATE GOAL");
-  // const goal = data.get("value") as string;
-  // console.log("goal", goal);
-  // console.log("goalId", goalId);
-  // if(goal){
-  //   await prisma.goal.update({
-  //     where: {
-  //       id: goalId,
-  //     },
-  //     data: {
-  //       goal: goal,
-  //     },
-  //   });
-  // }
-  // revalidatePath("/about");
+  console.log("value", value);
+  await prisma.goal.update({
+    where: {
+      id: goalId,
+    },
+    data: {
+      goal: value,
+    },
+  });
+  revalidatePath("/about");
 }
