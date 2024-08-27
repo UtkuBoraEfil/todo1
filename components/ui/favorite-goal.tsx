@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { Date } from "@/components/ui/history-day";
 import { FavoriteGoal as FavGoal } from "./favoriteGoal";
 
+
 export async function FavoriteGoal () {
   const session = await auth();
   const user = session?.user;
@@ -21,7 +22,14 @@ export async function FavoriteGoal () {
   return (
     <div className="xl:max-w-[215px] lg:max-w-[155px] max-w-[110px]">
         {favs.map((fav?)=> (
-          <FavGoal key={fav.id} fav={fav} />
+          <FavGoal
+            key={fav.id}
+            goal={fav.goal}
+            dateId={fav.dayId}
+            goal_id={fav.id}
+            is_complete={fav.isCompleted}
+            is_favorite={fav.isFavorite}
+          />
         ))}
     </div>
   );

@@ -5,7 +5,15 @@ import { UpdateGoalButton } from "@/components/ui/updateGoalButton";
 import { useState, useEffect, useRef, FormEvent } from "react";
 import { cn } from "@/lib/utils";
 import { Check, RefreshCcw } from "lucide-react";
-import { completeGoal, bringGoalToToday, updateGoal } from "@/actions";
+import { completeGoal, bringGoalToToday, updateGoal, addToFavorites } from "@/actions";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface DailyGoalProps {
   goal: string;
@@ -107,9 +115,7 @@ export function DailyGoal({ goal, goal_id, isCompleted }: DailyGoalProps) {
             className={cn(
               "w-full h-full overflow-hidden bg-transparent flex-1 pl-5 focus:outline-none active:outline-none transition-all duration-300 ease-in-out",
               completed && "line-through decoration-1",
-              isInputFocused
-                ? "h-full lg:py-2 "
-                : "h-full truncate"
+              isInputFocused ? "h-full lg:py-2 " : "h-full truncate"
             )}
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
@@ -148,7 +154,26 @@ export function DailyGoal({ goal, goal_id, isCompleted }: DailyGoalProps) {
           <Button id={goal_id} />
         </div> */}
       </form>
-      <button
+      <DropdownMenu>
+        <DropdownMenuTrigger className="outline-none">
+          <div
+            className={cn(
+              "bg-input-bg rounded-lg xl:w-12 xl:h-12 lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center shrink-0",
+              completed && "bg-light-gray"
+            )}
+          >
+            <SendIcon />
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent >
+          <DropdownMenuLabel>My Goal</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem><button onClick={() => bringGoalToToday(goal_id)}>Bring to today</button></DropdownMenuItem>
+          <DropdownMenuItem><button  onClick={() => addToFavorites(goal_id)}>Send to favorites</button></DropdownMenuItem>
+
+        </DropdownMenuContent>
+      </DropdownMenu>
+      {/* <button
         onClick={() => bringGoalToToday(goal_id)}
         className={cn(
           "bg-input-bg rounded-lg xl:w-12 xl:h-12 lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center shrink-0",
@@ -156,7 +181,7 @@ export function DailyGoal({ goal, goal_id, isCompleted }: DailyGoalProps) {
         )}
       >
         <SendIcon />
-      </button>
+      </button> */}
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { CheckCheck, LoaderCircle, TriangleAlert } from "lucide-react";
 import {
   Form,
@@ -27,10 +28,6 @@ export default function Register() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "nigga@nigga.nigga",
-      password: "31",
-    },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -46,57 +43,75 @@ export default function Register() {
 
   return (
     <div className="grid min-h-screen  place-content-center ">
-      <h1>Register</h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Username</FormLabel>
-                  <FormControl>
-                    <Input placeholder="username" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="****" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          {error && (
-            <div className="border bg-red-400 text-sm p-2 rounded-md flex gap-2 items-center text-white">
-              <TriangleAlert className="size-4" />
-              {error}
-            </div>
-          )}
-          <Button disabled={form.formState.isSubmitting} type="submit">
-            {form.formState.isSubmitting ? (
-              <div className="flex items-center gap-2">
-                <LoaderCircle className="size-4 animate-spin" />
-                Submitting
-              </div>
-            ) : (
-              "Submit"
-            )}
-          </Button>
-        </form>
-      </Form>
+      <div className="p-2 ">
+        <div className=" flex w-full justify-between gap-1 border rounded-md px-2 py-1 ">
+          <Link
+            href={"/auth/login"}
+            className=" py-2 px-5 rounded-md  w-full text-center  hover:bg-gray-100 transition-all duration-300"
+          >
+            Login
+          </Link>
+          <Link
+            href={"/auth/register"}
+            className="border py-2 px-5 rounded-lg bg-[#0F172A] w-full text-[#F8FAFC] text-center"
+          >
+            Register
+          </Link>
+        </div>
+        <div className=" py-3 px-5 mt-2 border rounded-md ">
+          <h1 className=" font-bold text-2xl py-2">Register</h1>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="example@domain.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="******" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+              {error && (
+                <div className="border bg-red-400 text-sm p-2 rounded-md flex gap-2 items-center text-white">
+                  <TriangleAlert className="size-4" />
+                  {error}
+                </div>
+              )}
+              <Button disabled={form.formState.isSubmitting} type="submit">
+                {form.formState.isSubmitting ? (
+                  <div className="flex items-center gap-2">
+                    <LoaderCircle className="size-4 animate-spin" />
+                    Submitting
+                  </div>
+                ) : (
+                  "Submit"
+                )}
+              </Button>
+            </form>
+          </Form>
+        </div>
+      </div>
     </div>
   );
 }

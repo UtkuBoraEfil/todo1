@@ -230,3 +230,27 @@ export async function updateGoal(goalId: string, value: string) {
   });
   revalidatePath("/about");
 }
+
+export async function removeFavorite(goalId: string){
+  await prisma.goal.update({
+    where: {
+      id: goalId,
+    },
+    data: {
+      isFavorite: false,
+    },
+  });
+  revalidatePath("/about");
+}
+
+export async function addToFavorites(goalId: string){
+  await prisma.goal.update({
+    where: {
+      id: goalId,
+    },
+    data: {
+      isFavorite: true,
+    },
+  });
+  revalidatePath("/about");
+}
